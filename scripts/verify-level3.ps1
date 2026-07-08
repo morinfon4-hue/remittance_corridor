@@ -5,6 +5,19 @@
 
 $ErrorActionPreference = "Stop"
 
+function Assert-Path {
+  param(
+    [string]$PathValue,
+    [string]$Label
+  )
+
+  if (-not (Test-Path $PathValue)) {
+    throw "Missing required $Label at $PathValue"
+  }
+
+  Write-Host "OK: $Label" -ForegroundColor Green
+}
+
 function Run-Step {
   param(
     [string]$Name,
@@ -19,19 +32,6 @@ function Run-Step {
   if ($LASTEXITCODE -ne 0) {
     throw "$Name failed with exit code $LASTEXITCODE"
   }
-}
-
-function Assert-Path {
-  param(
-    [string]$PathValue,
-    [string]$Label
-  )
-
-  if (-not (Test-Path $PathValue)) {
-    throw "Missing required $Label at $PathValue"
-  }
-
-  Write-Host "OK: $Label" -ForegroundColor Green
 }
 
 Write-Host "=== remittance_corridor Level 3 Verification ===" -ForegroundColor Cyan
